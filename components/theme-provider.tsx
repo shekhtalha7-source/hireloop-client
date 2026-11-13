@@ -47,9 +47,10 @@ function ThemeHotkey() {
         return
       }
 
-      if (event.key.toLowerCase() !== "d") {
-        return
-      }
+      // Check whether the pressed key is valid
+if (typeof event.key !== "string" || event.key.toLowerCase() !== "d") {
+  return
+}
 
       if (isTypingTarget(event.target)) {
         return
