@@ -16,6 +16,8 @@ export default function SignUpPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+const [role, setRole] = useState<"seeker" | "recruiter">("seeker");
+
 
   // Error and loading states
   const [error, setError] = useState<string | null>(null);
@@ -36,7 +38,8 @@ export default function SignUpPage() {
         name,
         email,
         password,
-        callbackURL: "/",
+          role,
+       callbackURL: "/dashboard",
       });
 
       // Check signup error
@@ -48,7 +51,7 @@ export default function SignUpPage() {
       }
 
       // Signup successful
-      router.push("/");
+      router.push("/dashboard");
 
     } catch (err) {
       setError(
@@ -152,6 +155,69 @@ export default function SignUpPage() {
               className="rounded-lg border border-neutral-700 bg-neutral-950 px-3 py-2 text-sm text-white placeholder:text-neutral-500 focus:border-violet-500 focus:outline-none"
             />
           </div>
+
+          {/* Role Selection */}
+<div className="flex flex-col gap-2">
+  <label className="text-sm text-neutral-300">
+    Select Your Role
+  </label>
+
+  <div className="grid grid-cols-2 gap-3">
+
+    {/* Seeker */}
+    <button
+      type="button"
+      onClick={() => setRole("seeker")}
+      aria-pressed={role === "seeker"}
+      className={`rounded-lg border p-4 text-left transition ${
+        role === "seeker"
+          ? "border-violet-500 bg-violet-500/10"
+          : "border-neutral-700 bg-neutral-950"
+      }`}
+    >
+      <span className="block text-sm font-semibold text-white">
+        Seeker
+      </span>
+
+      <span className="mt-1 block text-xs text-neutral-400">
+        Find jobs and apply
+      </span>
+
+      {role === "seeker" && (
+        <span className="mt-2 block text-xs text-violet-400">
+          ✓ Selected
+        </span>
+      )}
+    </button>
+
+    {/* Recruiter */}
+    <button
+      type="button"
+      onClick={() => setRole("recruiter")}
+      aria-pressed={role === "recruiter"}
+      className={`rounded-lg border p-4 text-left transition ${
+        role === "recruiter"
+          ? "border-violet-500 bg-violet-500/10"
+          : "border-neutral-700 bg-neutral-950"
+      }`}
+    >
+      <span className="block text-sm font-semibold text-white">
+        Recruiter
+      </span>
+
+      <span className="mt-1 block text-xs text-neutral-400">
+        Post jobs and hire people
+      </span>
+
+      {role === "recruiter" && (
+        <span className="mt-2 block text-xs text-violet-400">
+          ✓ Selected
+        </span>
+      )}
+    </button>
+
+  </div>
+</div>
 
           {/* Error Message */}
           {error && (

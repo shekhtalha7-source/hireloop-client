@@ -1,11 +1,17 @@
 
+
 "use client";
 
-// Import createAuthClient from Better Auth
 import { createAuthClient } from "better-auth/react";
+import { inferAdditionalFields } from "better-auth/client/plugins";
 
-// Create ONE authentication client
-export const authClient = createAuthClient();
+import type { auth } from "@/lib/auth";
 
-// Export the authentication methods from the same client
+// Create authentication client
+export const authClient = createAuthClient({
+  plugins: [inferAdditionalFields<typeof auth>()],
+});
+
+// Export authentication methods
 export const { signIn, signUp, useSession } = authClient;
+

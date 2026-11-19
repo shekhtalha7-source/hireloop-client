@@ -1,72 +1,44 @@
 "use client"
 
 import * as React from "react"
-import { ThemeProvider as NextThemesProvider, useTheme } from "next-themes"
 
-function ThemeProvider({
-  children,
-  ...props
-}: React.ComponentProps<typeof NextThemesProvider>) {
-  return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
-      {...props}
-    >
-      <ThemeHotkey />
-      {children}
-    </NextThemesProvider>
-  )
-}
+type Theme = "dark" | "light"
+const Ctx = React.createContext<{ resolvedTheme: Theme; setTheme: (t: Theme) => void }>({
+  resolvedTheme: "dark",
+  setTheme: () => {},
+})
 
-function isTypingTarget(target: EventTarget | null) {
-  if (!(target instanceof HTMLElement)) {
-    return false
-  }
+export const useTheme = () => React.useContext(Ctx)
 
-  return (
-    target.isContentEditable ||
-    target.tagName === "INPUT" ||
-    target.tagName === "TEXTAREA" ||
-    target.tagName === "SELECT"
-  )
-}
-
-function ThemeHotkey() {
-  const { resolvedTheme, setTheme } = useTheme()
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  const [theme, setThemeState] = React.useState<Theme>(() => {
+  if (typeof window === "undefined") return "dark"
+  return (localStorage.getItem("theme") as Theme | null) ?? "dark"
+})
 
   React.useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.defaultPrevented || event.repeat) {
-        return
-      }
+    document.documentElement.classList.toggle("dark", theme === "dark")
+    localStorage.setItem("theme", theme)
+  }, [theme])
 
-      if (event.metaKey || event.ctrlKey || event.altKey) {
-        return
-      }
-
-      // Check whether the pressed key is valid
-if (typeof event.key !== "string" || event.key.toLowerCase() !== "d") {
-  return
-}
-
-      if (isTypingTarget(event.target)) {
-        return
-      }
-
-      setTheme(resolvedTheme === "dark" ? "light" : "dark")
+  React.useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (e.defaultPrevented || e.repeat || e.metaKey || e.ctrlKey || e.altKey) return
+      if (typeof e.key !== "string" || e.key.toLowerCase() !== "d") return
+      const t = e.target
+      if (
+        t instanceof HTMLElement &&
+        (t.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(t.tagName))
+      ) return
+      setThemeState((p) => (p === "dark" ? "light" : "dark"))
     }
-
     window.addEventListener("keydown", onKeyDown)
+    return () => window.removeEventListener("keydown", onKeyDown)
+  }, [])
 
-    return () => {
-      window.removeEventListener("keydown", onKeyDown)
-    }
-  }, [resolvedTheme, setTheme])
-
-  return null
+  return (
+    <Ctx.Provider value={{ resolvedTheme: theme, setTheme: setThemeState }}>
+      {children}
+    </Ctx.Provider>
+  )
 }
-
-export { ThemeProvider }
