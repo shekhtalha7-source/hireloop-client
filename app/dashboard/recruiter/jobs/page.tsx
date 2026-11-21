@@ -60,29 +60,40 @@ export default async function RecruiterJobsPage() {
 
     
 return (
-    <div className="mx-auto w-full max-w-6xl px-4 py-8">
+   <div className="mx-auto w-full max-w-6xl px-4 py-8">
 
-        {/* Breadcrumb */}
-        <nav className="mb-6 flex items-center gap-2 text-sm">
-            <span className="text-white/50">Manage Jobs</span>
-            <span aria-hidden className="text-white/30">/</span>
-            <span className="text-white/90">
-                Job Listings &amp; Postings
-            </span>
-        </nav>
+    {/* Breadcrumb */}
+    <nav className="mb-6 flex items-center gap-2 text-sm">
+        <span className="text-gray-500 dark:text-white/50">
+            Manage Jobs
+        </span>
 
-        {/* Page heading + primary action */}
-        <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div className="flex flex-col gap-1.5">
-                <h1 className="font-heading text-[28px] leading-[1.15] font-bold tracking-[-0.02em] text-white">
-                    Manage Job Posts
-                </h1>
+        <span aria-hidden className="text-gray-400 dark:text-white/30">
+            /
+        </span>
 
-                <p className="text-sm text-white/60">
-                    Review live listings, monitor applicants, and update job details
-                    across your organization.
-                </p>
-            </div>
+        <span className="text-gray-900 dark:text-white/90">
+            Job Listings &amp; Postings
+        </span>
+    </nav>
+
+    {/* Page heading + primary action */}
+    <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1.5">
+
+            <h1 className="font-heading text-[28px] leading-[1.15] font-bold tracking-[-0.02em] text-gray-900 dark:text-white">
+                Manage Job Posts
+            </h1>
+
+            <p className="text-sm text-gray-600 dark:text-white/60">
+                Review live listings, monitor applicants, and update job details
+                across your organization.
+            </p>
+
+        </div>
+
+
+
 
             <Link
                 href="/dashboard/recruiter/jobs/new"

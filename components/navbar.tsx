@@ -53,12 +53,12 @@ export function Navbar() {
 
   // Navigation links (must live inside the component to use `session`)
   const navLinks = [
-    { label: "Browse Jobs", href: "/jobs" },
+    { label: "Browse Jobs", href: "/browse-jobs" },
     { label: "Company", href: "/company" },
     { label: "Pricing", href: "/pricing" },
-    ...(isLoggedIn
-      ? [{ label: "Dashboard", href: `/dashboard/${role}` }]
-      : []),
+    
+  { label: "Dashboard", href: `/dashboard/${role}` }
+      
   ];
 
   // Logout

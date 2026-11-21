@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/sidebar";
 
 import DashboardSidebar from "../components/DashboardSidebar";
+import { Toaster } from "@/components/ui/toast";
 
 const DashboardLayout = ({
   children,
@@ -25,6 +26,7 @@ const DashboardLayout = ({
         <main className="flex-1 p-6">
           {children}
         </main>
+        <Toaster/>
       </SidebarInset>
     </SidebarProvider>
   );
